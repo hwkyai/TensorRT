@@ -33,6 +33,7 @@ using namespace nvinfer1::plugin;
 #include "coordConvACPlugin.h"
 #include "cropAndResizePlugin.h"
 #include "detectionLayerPlugin.h"
+#include "dummyFlattenConcat.h"
 #include "flattenConcat.h"
 #include "generateDetectionPlugin.h"
 #include "gridAnchorPlugin.h"
@@ -168,6 +169,7 @@ extern "C"
         initializePlugin<nvinfer1::plugin::CoordConvACPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::CropAndResizePluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::DetectionLayerPluginCreator>(logger, libNamespace);
+        initializePlugin<nvinfer1::plugin::DummyFlattenConcatPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::FlattenConcatPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::GenerateDetectionPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::GridAnchorPluginCreator>(logger, libNamespace);
