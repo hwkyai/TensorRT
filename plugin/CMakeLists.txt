@@ -34,6 +34,7 @@ set(PLUGIN_LISTS
     batchTilePlugin
     coordConvACPlugin
     cropAndResizePlugin
+    ctcBeamSearchDecoderPlugin
     detectionLayerPlugin
     dummyFlattenConcat
     flattenConcat

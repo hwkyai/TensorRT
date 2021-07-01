@@ -32,6 +32,7 @@ using namespace nvinfer1::plugin;
 #include "batchedNMSPlugin.h"
 #include "coordConvACPlugin.h"
 #include "cropAndResizePlugin.h"
+#include "ctcBeamSearchDecoderCustom.h"
 #include "detectionLayerPlugin.h"
 #include "dummyFlattenConcat.h"
 #include "flattenConcat.h"
@@ -168,6 +169,7 @@ extern "C"
         initializePlugin<nvinfer1::plugin::BatchedNMSDynamicPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::CoordConvACPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::CropAndResizePluginCreator>(logger, libNamespace);
+        initializePlugin<nvinfer1::plugin::CtcBeamSearchCustomPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::DetectionLayerPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::DummyFlattenConcatPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::FlattenConcatPluginCreator>(logger, libNamespace);
