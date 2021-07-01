@@ -105,7 +105,6 @@ public:
 
 private:
     static PluginFieldCollection mFC;
-    static std::vector<PluginField> mPluginAttributes;
 };
 
 } // namespace plugin

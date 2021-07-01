@@ -34,7 +34,6 @@ static const char* CTCBEAMSEARCHCUSTOM_PLUGIN_NAME{"CTCBeamSearchDecoder"};
 }
 
 PluginFieldCollection CtcBeamSearchCustomPluginCreator::mFC = {};
-std::vector<PluginField> CtcBeamSearchCustomPluginCreator::mPluginAttributes;
 
 CtcBeamSearchCustom::~CtcBeamSearchCustom() {}
 
@@ -141,8 +140,8 @@ IPluginV2DynamicExt* CtcBeamSearchCustom::clone() const
 
 CtcBeamSearchCustomPluginCreator::CtcBeamSearchCustomPluginCreator()
 {
-    mFC.nbFields = mPluginAttributes.size();
-    mFC.fields = mPluginAttributes.data();
+    mFC.nbFields = 0;
+    mFC.fields = nullptr;
 }
 
 const char* CtcBeamSearchCustomPluginCreator::getPluginName() const
