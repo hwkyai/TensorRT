@@ -30,7 +30,7 @@ namespace nvinfer1
 {
 namespace plugin
 {
-class CtcBeamSearchCustom : public IPluginV2IOExt
+class CtcBeamSearchCustom : public IPluginV2DynamicExt
 {
 public:
     CtcBeamSearchCustom(const void* data, size_t length);
@@ -47,16 +47,9 @@ public:
 
     int getNbOutputs() const override;
 
-    Dims getOutputDimensions(int index, const Dims* inputs, int nbInputDims) override;
-
     int initialize() override;
 
     void terminate() override;
-
-    size_t getWorkspaceSize(int maxBatchSize) const override;
-
-    int enqueue(
-        int batchSize, const void* const* inputs, void** outputs, void* workspace, cudaStream_t stream) override;
 
     size_t getSerializationSize() const override;
 
@@ -71,21 +64,23 @@ public:
 // IPluginV2Ext
     DataType getOutputDataType(int index, const nvinfer1::DataType* inputTypes, int nbInputs) const override;
 
-    bool isOutputBroadcastAcrossBatch(int outputIndex, const bool* inputIsBroadcasted, int nbInputs) const override;
-
-    bool canBroadcastInputAcrossBatch(int inputIndex) const override;
-
     void attachToContext(
         cudnnContext* cudnnContext, cublasContext* cublasContext, IGpuAllocator* gpuAllocator) override;
 
     void detachFromContext() override;
 
-// IPluginV2IOExt
-    void configurePlugin(const PluginTensorDesc* in, int nbInput, const PluginTensorDesc* out, int nbOutput) override;
+// IPluginV2DynamicExt
+    void configurePlugin (const DynamicPluginTensorDesc *in, int32_t nbInputs, const DynamicPluginTensorDesc *out, int32_t nbOutputs) override;
 
-    bool supportsFormatCombination(int pos, const PluginTensorDesc* inOut, int nbInputs, int nbOutputs) const override;
+    DimsExprs getOutputDimensions (int32_t outputIndex, const DimsExprs *inputs, int32_t nbInputs, IExprBuilder &exprBuilder) override;
 
-    IPluginV2IOExt* clone() const override;
+    size_t getWorkspaceSize (const PluginTensorDesc *inputs, int32_t nbInputs, const PluginTensorDesc *outputs, int32_t nbOutputs) const override;
+
+    int enqueue (const PluginTensorDesc *inputDesc, const PluginTensorDesc *outputDesc, const void *const *inputs, void *const *outputs, void *workspace, cudaStream_t stream) override;
+
+    bool supportsFormatCombination (int32_t pos, const PluginTensorDesc *inOut, int32_t nbInputs, int32_t nbOutputs) override;
+
+    IPluginV2DynamicExt* clone() const override;
 
 private:
     std::string mPluginNamespace;

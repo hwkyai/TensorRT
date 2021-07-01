@@ -43,10 +43,10 @@ int CtcBeamSearchCustom::getNbOutputs() const
     return 1;
 }
 
-Dims CtcBeamSearchCustom::getOutputDimensions(int index, const Dims* inputs, int nbInputDims)
+DimsExprs CtcBeamSearchCustom::getOutputDimensions (int32_t outputIndex, const DimsExprs *inputs, int32_t nbInputs, IExprBuilder &exprBuilder)
 {
-    ASSERT(index < nbInputDims);
-    return inputs[index];
+    ASSERT(outputIndex < nbInputs);
+    return inputs[outputIndex];
 }
 
 int CtcBeamSearchCustom::initialize()
@@ -56,12 +56,12 @@ int CtcBeamSearchCustom::initialize()
 
 void CtcBeamSearchCustom::terminate() {}
 
-size_t CtcBeamSearchCustom::getWorkspaceSize(int maxBatchSize) const
+size_t CtcBeamSearchCustom::getWorkspaceSize (const PluginTensorDesc *inputs, int32_t nbInputs, const PluginTensorDesc *outputs, int32_t nbOutputs) const
 {
     return 0;
 }
 
-int CtcBeamSearchCustom::enqueue(int batchSize, const void* const* inputs, void** outputs, void*, cudaStream_t stream)
+int CtcBeamSearchCustom::enqueue (const PluginTensorDesc *inputDesc, const PluginTensorDesc *outputDesc, const void *const *inputs, void *const *outputs, void *workspace, cudaStream_t stream)
 {
     auto* output = static_cast<float*>(outputs[0]);
     auto* input = static_cast<const float*>(inputs[0]);
@@ -89,19 +89,6 @@ void CtcBeamSearchCustom::attachToContext(
 // Detach the plugin object from its execution context.
 void CtcBeamSearchCustom::detachFromContext() {}
 
-// Return true if output tensor is broadcast across a batch.
-bool CtcBeamSearchCustom::isOutputBroadcastAcrossBatch(int outputIndex, const bool* inputIsBroadcasted, int nbInputs) const
-{
-    ASSERT(outputIndex < nbInputs)
-    return inputIsBroadcasted[outputIndex];
-}
-
-// Return true if plugin can use input that is broadcast across batch without replication.
-bool CtcBeamSearchCustom::canBroadcastInputAcrossBatch(int inputIndex) const
-{
-    return true;
-}
-
 // Set plugin namespace
 void CtcBeamSearchCustom::setPluginNamespace(const char* pluginNamespace)
 {
@@ -120,11 +107,11 @@ DataType CtcBeamSearchCustom::getOutputDataType(int index, const nvinfer1::DataT
     return inputTypes[index];
 }
 
-void CtcBeamSearchCustom::configurePlugin(const PluginTensorDesc* in, int nbInput, const PluginTensorDesc* out, int nbOutput)
+void CtcBeamSearchCustom::configurePlugin (const DynamicPluginTensorDesc *in, int32_t nbInputs, const DynamicPluginTensorDesc *out, int32_t nbOutputs)
 {
 }
 
-bool CtcBeamSearchCustom::supportsFormatCombination(int pos, const PluginTensorDesc* inOut, int nbInputs, int nbOutputs) const
+bool CtcBeamSearchCustom::supportsFormatCombination(int pos, const PluginTensorDesc* inOut, int nbInputs, int nbOutputs)
 {
     return true;
 }
@@ -145,7 +132,7 @@ void CtcBeamSearchCustom::destroy()
     delete this;
 }
 
-IPluginV2IOExt* CtcBeamSearchCustom::clone() const
+IPluginV2DynamicExt* CtcBeamSearchCustom::clone() const
 {
     auto* plugin = new CtcBeamSearchCustom();
     plugin->setPluginNamespace(mPluginNamespace.c_str());
