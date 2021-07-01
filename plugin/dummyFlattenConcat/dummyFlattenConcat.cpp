@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "flattenConcat.h"
+#include "dummyFlattenConcat.h"
 #include <algorithm>
 #include <cstring>
 #include <cudnn.h>
